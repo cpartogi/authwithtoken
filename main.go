@@ -1,27 +1,42 @@
 package main
 
 import (
+	"authwithtoken/domain/auth/repo"
+	"authwithtoken/domain/auth/usecase"
+	appInit "authwithtoken/init"
 	"fmt"
-	"runtime"
-	"time"
+
+	handler "authwithtoken/domain/auth/handler/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
+func init() {
+	appInit.StartAppInit()
+}
+
 func main() {
-	runtime.GOMAXPROCS(2)
+	db, err := appInit.ConnectToPgServer()
 
-	messages := make(chan int, 3)
-
-	go func() {
-		for {
-			i := <-messages
-			fmt.Println("receive data", i)
-		}
-	}()
-
-	for i := 0; i < 5; i++ {
-		fmt.Println("send data", i)
-		messages <- i
+	if err != nil {
+		fmt.Println("error connect to database")
 	}
 
-	time.Sleep(1 * time.Second)
+	defer db.Close()
+
+	//router
+	e := echo.New()
+
+	//middleware
+	e.Use(middleware.Recover())
+	e.Use(middleware.RequestID())
+	e.Use(middleware.Logger())
+
+	//depedency
+	authRepo := repo.NewAuthRepo(db)
+
+	authUc := usecase.NewAuthUsecase(authRepo)
+
+	handler.NewAuthHander(e, authUc)
 }

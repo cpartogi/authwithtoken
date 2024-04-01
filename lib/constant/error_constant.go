@@ -20,7 +20,6 @@ var (
 	ErrNotFound     = fmt.Errorf("data not found")
 	ErrConflict     = fmt.Errorf("conflict, data already exist")
 	ErrBadRequest   = fmt.Errorf("bad request")
-	ErrInvalidUuid  = fmt.Errorf("invalid Id format (uuid required)")
 	ErrTitle        = fmt.Errorf("title required")
 	ErrTypeNotFound = fmt.Errorf("tutorial Type not found")
 )
