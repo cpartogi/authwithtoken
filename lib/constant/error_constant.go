@@ -14,12 +14,11 @@ const (
 	DataNotFound          = "data not found"
 	InvalidPassword       = "invalid password"
 	DuplicatePhone        = "phone number already exist"
+	EmailRequired         = "email is required"
 )
 
 var (
-	ErrNotFound     = fmt.Errorf("data not found")
-	ErrConflict     = fmt.Errorf("conflict, data already exist")
-	ErrBadRequest   = fmt.Errorf("bad request")
-	ErrTitle        = fmt.Errorf("title required")
-	ErrTypeNotFound = fmt.Errorf("tutorial Type not found")
+	ErrNotFound   = fmt.Errorf("data not found")
+	ErrConflict   = fmt.Errorf("conflict, data already exist")
+	ErrBadRequest = fmt.Errorf("bad request")
 )

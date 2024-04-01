@@ -4,6 +4,7 @@ import (
 	"authwithtoken/lib/constant"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 var commonErrorMap = map[error]int{
@@ -14,6 +15,11 @@ var commonErrorMap = map[error]int{
 
 // CommonError is
 func CommonError(err error) (int, error) {
+
+	if strings.Contains(err.Error(), "required") || strings.Contains(err.Error(), "character") {
+		return http.StatusBadRequest, fmt.Errorf(err.Error())
+	}
+
 	switch err {
 	case constant.ErrNotFound:
 		return commonErrorMap[constant.ErrNotFound], constant.ErrNotFound
@@ -21,10 +27,6 @@ func CommonError(err error) (int, error) {
 		return commonErrorMap[constant.ErrConflict], constant.ErrConflict
 	case constant.ErrBadRequest:
 		return commonErrorMap[constant.ErrBadRequest], constant.ErrBadRequest
-	case constant.ErrTitle:
-		return commonErrorMap[constant.ErrBadRequest], constant.ErrTitle
-	case constant.ErrTypeNotFound:
-		return commonErrorMap[constant.ErrBadRequest], constant.ErrTypeNotFound
 	}
 	return http.StatusInternalServerError, fmt.Errorf(err.Error())
 }

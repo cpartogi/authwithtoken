@@ -25,6 +25,10 @@ func isDataValid(data model.Users) (invalidMessages []string, isValid bool) {
 		invalidMessages = append(invalidMessages, constant.PassWordCharLength)
 	}
 
+	if len(data.Email) == 0 {
+		invalidMessages = append(invalidMessages, constant.EmailRequired)
+	}
+
 	if !isValidPasswordChar(data.Password) {
 		invalidMessages = append(invalidMessages, constant.PasswordReqChar)
 	}

@@ -11,8 +11,8 @@ import (
 
 func setupMainConfig() {
 
-	if utils.IsFileOrDirExist("main.yml") {
-		viper.SetConfigFile("main.yml")
+	if utils.IsFileOrDirExist("config.yml") {
+		viper.SetConfigFile("config.yml")
 		err := viper.MergeInConfig()
 		if err != nil {
 			fmt.Println("error config not found")
@@ -24,5 +24,4 @@ func setupMainConfig() {
 	viper.SetEnvKeyReplacer(replacer)
 
 	viper.AutomaticEnv()
-
 }

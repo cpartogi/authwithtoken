@@ -6,4 +6,4 @@ docker-restart:
 	docker compose up -d
 
 migration-up:
-	migrate -path migration -database "postgresql://postgres:postgres@localhost:6432/postgres?sslmode=disable" -verbose up
+	migrate -path migrations -database "postgresql://postgres:postgres@localhost:6432/postgres?sslmode=disable" -verbose up

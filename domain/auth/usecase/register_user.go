@@ -5,6 +5,8 @@ import (
 	"context"
 	"errors"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 func (u *AuthUsecase) RegisterUser(ctx context.Context, req model.Users) (id string, err error) {
@@ -19,6 +21,15 @@ func (u *AuthUsecase) RegisterUser(ctx context.Context, req model.Users) (id str
 	if !isValid {
 		errorMsg := strings.Join(invalidMessages, " , ")
 		return "", errors.New(errorMsg)
+	}
+
+	//insert to db
+	req.Id = uuid.New().String()
+
+	id, err = u.authRepo.InsertUser(ctx, req)
+
+	if err != nil {
+		return "", err
 	}
 
 	return

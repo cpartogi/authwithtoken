@@ -11,8 +11,9 @@ type AuthHandler struct {
 }
 
 func NewAuthHander(e *echo.Echo, us auth.AuthUsecaseInteface) {
-	// handler := &AuthHandler{
-	// 	authUsecase: us,
-	// }
+	handler := &AuthHandler{
+		authUsecase: us,
+	}
 
+	e.POST("/auth/register", handler.RegisterUser)
 }

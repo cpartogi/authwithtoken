@@ -80,7 +80,7 @@ func ErrorBadRequest(ctx echo.Context, err error, data interface{}) error {
 // ErrorNotFound returns
 func ErrorNotFound(ctx echo.Context, err error, data interface{}) error {
 	responseData := response.Base{
-		Status:     "not found",
+		Status:     "Not found",
 		StatusCode: http.StatusNotFound,
 		Message:    err.Error(),
 		Timestamp:  time.Now().UTC(),
