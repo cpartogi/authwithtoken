@@ -3,6 +3,7 @@ package usecase
 import (
 	"authwithtoken/domain/auth/model"
 	"authwithtoken/lib/constant"
+	"regexp"
 	"strings"
 	"unicode"
 )
@@ -21,7 +22,7 @@ func isDataValid(data model.Users) (invalidMessages []string, isValid bool) {
 		invalidMessages = append(invalidMessages, constant.PhoneNumberIndonesian)
 	}
 
-	if len(data.Password) < 6 || len(data.Password) > 64 {
+	if len(data.UserPassword) < 6 || len(data.UserPassword) > 64 {
 		invalidMessages = append(invalidMessages, constant.PassWordCharLength)
 	}
 
@@ -29,7 +30,11 @@ func isDataValid(data model.Users) (invalidMessages []string, isValid bool) {
 		invalidMessages = append(invalidMessages, constant.EmailRequired)
 	}
 
-	if !isValidPasswordChar(data.Password) {
+	if !isValidEmail(data.Email) {
+		invalidMessages = append(invalidMessages, constant.EmailInvalidAdress)
+	}
+
+	if !isValidPasswordChar(data.UserPassword) {
 		invalidMessages = append(invalidMessages, constant.PasswordReqChar)
 	}
 
@@ -59,4 +64,15 @@ func isValidPasswordChar(s string) bool {
 	}
 
 	return false
+}
+
+func isValidEmail(email string) bool {
+	// Regular expression for basic email validation
+	pattern := `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+
+	// Compile the pattern
+	regex := regexp.MustCompile(pattern)
+
+	// Match the email against the pattern
+	return regex.MatchString(email)
 }

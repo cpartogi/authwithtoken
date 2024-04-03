@@ -16,7 +16,7 @@ var commonErrorMap = map[error]int{
 // CommonError is
 func CommonError(err error) (int, error) {
 
-	if strings.Contains(err.Error(), "required") || strings.Contains(err.Error(), "character") {
+	if strings.Contains(err.Error(), "required") || strings.Contains(err.Error(), "character") || strings.Contains(err.Error(), "email") {
 		return http.StatusBadRequest, fmt.Errorf(err.Error())
 	}
 

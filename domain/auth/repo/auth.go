@@ -28,7 +28,7 @@ func (r *AuthRepo) InsertUser(ctx context.Context, req model.Users) (userId stri
 	}
 
 	query := `INSERT INTO users (id, full_name, email, phone_number, user_password, created_by, created_at) values ('%s', '%s', '%s', '%s','%s', '%s', now())`
-	query = fmt.Sprintf(query, req.Id, req.FullName, req.Email, req.PhoneNumber, req.Password, req.Id)
+	query = fmt.Sprintf(query, req.Id, req.FullName, req.Email, req.PhoneNumber, req.UserPassword, req.Id)
 
 	_, err = tx.ExecContext(ctx, query)
 
@@ -45,4 +45,17 @@ func (r *AuthRepo) InsertUser(ctx context.Context, req model.Users) (userId stri
 	userId = req.Id
 
 	return
+}
+
+func (r *AuthRepo) GetUserByEmail(ctx context.Context, email string) (res model.Users, err error) {
+
+	err = r.gopg.ModelContext(ctx, &res).Where("email=?", email).First()
+
+	if err != nil {
+		if err != pg.ErrNoRows {
+			return
+		}
+	}
+
+	return res, nil
 }

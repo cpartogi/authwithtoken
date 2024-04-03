@@ -15,6 +15,7 @@ const (
 	InvalidPassword       = "invalid password"
 	DuplicatePhone        = "phone number already exist"
 	EmailRequired         = "email is required"
+	EmailInvalidAdress    = "invalid email address"
 )
 
 var (

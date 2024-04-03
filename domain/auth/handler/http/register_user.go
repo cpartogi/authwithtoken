@@ -17,11 +17,11 @@ func (h *AuthHandler) RegisterUser(c echo.Context) error {
 	c.Bind(&req)
 
 	registerUser := model.Users{
-		Id:          req.Id,
-		FullName:    req.FullName,
-		Email:       req.Email,
-		PhoneNumber: req.PhoneNumber,
-		Password:    req.Password,
+		Id:           req.Id,
+		FullName:     req.FullName,
+		Email:        req.Email,
+		PhoneNumber:  req.PhoneNumber,
+		UserPassword: req.Password,
 	}
 
 	id, err := h.authUsecase.RegisterUser(ctx, registerUser)
