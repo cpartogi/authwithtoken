@@ -43,9 +43,11 @@ func (u *AuthUsecase) Login(ctx context.Context, req model.Users) (res model.Use
 	}
 
 	res = model.UserToken{
-		Id:             res.Id,
-		Token:          token.Token,
-		TokenExpiredAt: token.TokenExpiredAt,
+		Id:                    loginData.Id,
+		Token:                 token.Token,
+		TokenExpiredAt:        token.TokenExpiredAt,
+		RefreshToken:          token.RefreshToken,
+		RefreshTokenExpiredAt: token.RefreshTokenExpiredAt,
 	}
 
 	return

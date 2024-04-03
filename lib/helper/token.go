@@ -11,25 +11,44 @@ import (
 
 var jwtSigningMethod = jwt.SigningMethodHS256
 
+type JWTToken struct {
+	Id          string `json:"id"`
+	FullName    string `json:"fullName"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phoneNumber"`
+	jwt.StandardClaims
+}
+
 func GenerateToken(login model.Users) (tokenData model.UserToken, err error) {
 	tokenData, err = GenerateJWT(login)
 	if err != nil {
 		return
 	}
 
+	refreshTokenData, err := GenerateRefresh(login)
+
+	if err != nil {
+		return
+	}
+
+	tokenData.RefreshToken = refreshTokenData.RefreshToken
+	tokenData.RefreshTokenExpiredAt = refreshTokenData.RefreshTokenExpiredAt
+
 	return
 }
 
 func GenerateJWT(user model.Users) (tokenData model.UserToken, err error) {
 
-	expiredIn := viper.GetInt(`token.expired_in_minutes`)
-	exp := time.Now().UTC().Add(time.Duration(expiredIn) * time.Minute)
+	exp := time.Now().UTC().Add(viper.GetDuration("token.expiry"))
 	claims := JWTToken{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().UTC().Unix(),
 			ExpiresAt: exp.Unix(),
 		},
-		Id: user.Id,
+		Id:          user.Id,
+		FullName:    user.FullName,
+		Email:       user.Email,
+		PhoneNumber: user.PhoneNumber,
 	}
 
 	token := jwt.NewWithClaims(
@@ -51,9 +70,33 @@ func GenerateJWT(user model.Users) (tokenData model.UserToken, err error) {
 	return
 }
 
-type JWTToken struct {
-	Id string `json:"id"`
-	jwt.StandardClaims
+func GenerateRefresh(user model.Users) (refreshTokenData model.UserToken, err error) {
+
+	exp := time.Now().UTC().Add(viper.GetDuration("token.refresh_token_expiry"))
+	claims := JWTToken{
+		StandardClaims: jwt.StandardClaims{
+			IssuedAt:  time.Now().UTC().Unix(),
+			ExpiresAt: exp.Unix(),
+		},
+		Id: user.Id,
+	}
+
+	token := jwt.NewWithClaims(
+		jwtSigningMethod,
+		claims,
+	)
+
+	signedToken, err := token.SignedString([]byte(viper.GetString("token.key")))
+	if err != nil {
+		return
+	}
+
+	refreshTokenData = model.UserToken{
+		RefreshToken:          signedToken,
+		RefreshTokenExpiredAt: exp,
+	}
+
+	return
 }
 
 func ParseToken(tokenString string) (*jwt.Token, error) {
