@@ -11,11 +11,11 @@ const (
 	InternalServerError   = "Internal Server Error"
 	PhoneNumberRequired   = "phoneNumber is required"
 	PasswordRequired      = "password is required"
-	DataNotFound          = "data not found"
 	InvalidPassword       = "invalid password"
 	DuplicatePhone        = "phone number already exist"
 	EmailRequired         = "email is required"
 	EmailInvalidAdress    = "invalid email address"
+	PasswordWrong         = "wrong password"
 )
 
 var (

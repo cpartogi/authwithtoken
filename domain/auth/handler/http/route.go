@@ -16,4 +16,6 @@ func NewAuthHander(e *echo.Echo, us auth.AuthUsecaseInteface) {
 	}
 
 	e.POST("/auth/register", handler.RegisterUser)
+	e.POST("/auth/login", handler.Login)
+
 }

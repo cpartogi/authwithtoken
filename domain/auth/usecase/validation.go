@@ -45,6 +45,27 @@ func isDataValid(data model.Users) (invalidMessages []string, isValid bool) {
 	}
 }
 
+func isLoginValid(data model.Users) (invalidMessages []string, isValid bool) {
+	if len(data.Email) == 0 {
+		invalidMessages = append(invalidMessages, constant.EmailRequired)
+	}
+
+	if !isValidEmail(data.Email) {
+		invalidMessages = append(invalidMessages, constant.EmailInvalidAdress)
+	}
+
+	if !isValidPasswordChar(data.UserPassword) {
+		invalidMessages = append(invalidMessages, constant.PasswordReqChar)
+	}
+
+	if len(invalidMessages) > 0 {
+		return invalidMessages, false
+	} else {
+		return []string{""}, true
+	}
+
+}
+
 func isValidPasswordChar(s string) bool {
 	var hasUpperCase, hasNumber, hasSpecial bool
 

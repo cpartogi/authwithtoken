@@ -3,6 +3,7 @@ package usecase
 import (
 	"authwithtoken/domain/auth/model"
 	"authwithtoken/lib/constant"
+	"authwithtoken/lib/pkg/utils"
 	"context"
 	"errors"
 	"strings"
@@ -38,10 +39,17 @@ func (u *AuthUsecase) RegisterUser(ctx context.Context, req model.Users) (id str
 	//insert to db
 	req.Id = uuid.New().String()
 
+	pHash, err := utils.HashPassword(req.UserPassword)
+	if err != nil {
+		return
+	}
+
+	req.UserPassword = pHash
+
 	id, err = u.authRepo.InsertUser(ctx, req)
 
 	if err != nil {
-		return "", err
+		return
 	}
 
 	return
