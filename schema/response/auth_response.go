@@ -9,3 +9,10 @@ type UserToken struct {
 	RefreshToken          string     `json:"refreshToken,omitempty"`
 	RefreshTokenExpiredAt *time.Time `json:"refreshTokenExpiredAt,omitempty"`
 }
+
+type UserData struct {
+	Id          string `json:"id"`
+	FullName    string `json:"fullName"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"phoneNumber"`
+}
