@@ -1,9 +1,9 @@
 run:	
 	go run main.go
 
-init:
+init-app:
 	go mod init authwithtoken
-	go mod tidy	
+	go mod tidy
 
 docker-restart:
 	docker compose down -v
