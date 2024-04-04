@@ -6,6 +6,7 @@ import (
 	"authwithtoken/domain/auth/model"
 	"authwithtoken/lib/constant"
 	"authwithtoken/schema/request"
+	"authwithtoken/schema/response"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,10 +25,14 @@ func (h *AuthHandler) RegisterUser(c echo.Context) error {
 		UserPassword: req.Password,
 	}
 
-	id, err := h.authUsecase.RegisterUser(ctx, registerUser)
+	register, err := h.authUsecase.RegisterUser(ctx, registerUser)
 	if err != nil {
 		return utils.ErrorResponse(c, err, map[string]interface{}{})
 	}
 
-	return utils.SuccessResponse(c, constant.SuccessAddData, id)
+	data := response.UserToken{
+		Id: register,
+	}
+
+	return utils.SuccessResponse(c, constant.SuccessAddData, data)
 }

@@ -11,6 +11,7 @@ var commonErrorMap = map[error]int{
 	constant.ErrNotFound:   http.StatusNotFound,
 	constant.ErrConflict:   http.StatusConflict,
 	constant.ErrBadRequest: http.StatusBadRequest,
+	constant.ErrForbidden:  http.StatusForbidden,
 }
 
 // CommonError is
@@ -27,6 +28,8 @@ func CommonError(err error) (int, error) {
 		return commonErrorMap[constant.ErrConflict], constant.ErrConflict
 	case constant.ErrBadRequest:
 		return commonErrorMap[constant.ErrBadRequest], constant.ErrBadRequest
+	case constant.ErrForbidden:
+		return commonErrorMap[constant.ErrForbidden], constant.ErrForbidden
 	}
 	return http.StatusInternalServerError, fmt.Errorf(err.Error())
 }

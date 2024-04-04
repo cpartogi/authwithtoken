@@ -59,3 +59,16 @@ func (r *AuthRepo) GetUserByEmail(ctx context.Context, email string) (res model.
 
 	return res, nil
 }
+
+func (r *AuthRepo) GetUserById(ctx context.Context, id string) (res model.Users, err error) {
+
+	err = r.gopg.ModelContext(ctx, &res).Where("id=?", id).First()
+
+	if err != nil {
+		if err != pg.ErrNoRows {
+			return
+		}
+	}
+
+	return res, nil
+}

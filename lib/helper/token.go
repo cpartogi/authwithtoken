@@ -19,7 +19,7 @@ type JWTToken struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(login model.Users) (tokenData model.UserToken, err error) {
+func GenerateTokenAndRefreshToken(login model.Users) (tokenData model.UserToken, err error) {
 	tokenData, err = GenerateJWT(login)
 	if err != nil {
 		return
@@ -33,6 +33,15 @@ func GenerateToken(login model.Users) (tokenData model.UserToken, err error) {
 
 	tokenData.RefreshToken = refreshTokenData.RefreshToken
 	tokenData.RefreshTokenExpiredAt = refreshTokenData.RefreshTokenExpiredAt
+
+	return
+}
+
+func GenerateToken(login model.Users) (tokenData model.UserToken, err error) {
+	tokenData, err = GenerateJWT(login)
+	if err != nil {
+		return
+	}
 
 	return
 }

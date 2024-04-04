@@ -32,6 +32,8 @@ func ErrorResponse(ctx echo.Context, err error, data interface{}) error {
 		return ErrorBadRequest(ctx, err, data)
 	case http.StatusNotFound:
 		return ErrorNotFound(ctx, err, data)
+	case http.StatusForbidden:
+		return ErrorForbidden(ctx, err, data)
 	}
 	return ErrorInternalServerResponse(ctx, err, data)
 }
@@ -88,4 +90,17 @@ func ErrorNotFound(ctx echo.Context, err error, data interface{}) error {
 	}
 
 	return ctx.JSON(http.StatusNotFound, responseData)
+}
+
+// ErrorForbidden returns
+func ErrorForbidden(ctx echo.Context, err error, data interface{}) error {
+	responseData := response.Base{
+		Status:     "Forbidden",
+		StatusCode: http.StatusForbidden,
+		Message:    err.Error(),
+		Timestamp:  time.Now().UTC(),
+		Data:       data,
+	}
+
+	return ctx.JSON(http.StatusForbidden, responseData)
 }

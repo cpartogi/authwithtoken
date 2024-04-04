@@ -37,7 +37,7 @@ func (u *AuthUsecase) Login(ctx context.Context, req model.Users) (res model.Use
 		return res, errors.New(constant.PasswordWrong)
 	}
 
-	token, err := helper.GenerateToken(req)
+	token, err := helper.GenerateTokenAndRefreshToken(loginData)
 	if err != nil {
 		return
 	}
