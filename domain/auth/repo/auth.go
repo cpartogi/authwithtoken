@@ -5,6 +5,7 @@ import (
 	"authwithtoken/domain/auth/model"
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/go-pg/pg"
 	"github.com/google/uuid"
@@ -22,24 +23,12 @@ func NewAuthRepo(gopg *pg.DB) auth.AuthRepoInterface {
 
 func (r *AuthRepo) InsertUser(ctx context.Context, req model.Users) (userId string, err error) {
 
-	tx, err := r.gopg.Begin()
-
-	if err != nil {
-		return
-	}
-
 	query := `INSERT INTO users (id, full_name, email, phone_number, user_password, created_by, created_at) values ('%s', '%s', '%s', '%s','%s', '%s', now())`
 	query = fmt.Sprintf(query, req.Id, req.FullName, req.Email, req.PhoneNumber, req.UserPassword, req.Id)
 
-	_, err = tx.ExecContext(ctx, query)
+	_, err = r.gopg.ExecContext(ctx, query)
 
 	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if err = tx.Commit(); err != nil {
-		tx.Rollback()
 		return
 	}
 
@@ -76,29 +65,48 @@ func (r *AuthRepo) GetUserById(ctx context.Context, id string) (res model.Users,
 
 func (r *AuthRepo) InsertUserLog(ctx context.Context, req model.UserLogs) (err error) {
 
-	tx, err := r.gopg.Begin()
-
-	if err != nil {
-		return
-	}
-
 	req.Id = uuid.New().String()
 
 	query := `INSERT INTO user_logs (id, user_id, is_success, login_message, created_at) values ('%s', '%s', '%t', '%s', now())`
 	query = fmt.Sprintf(query, req.Id, req.UserId, req.IsSuccess, req.LoginMessage)
 
-	_, err = tx.ExecContext(ctx, query)
+	_, err = r.gopg.ExecContext(ctx, query)
 
 	if err != nil {
-		tx.Rollback()
-		return
-	}
-
-	if err = tx.Commit(); err != nil {
-		tx.Rollback()
 		return
 	}
 
 	return
 
+}
+
+func (r *AuthRepo) UpsertUserToken(ctx context.Context, req model.UserToken) (err error) {
+
+	// check data exist
+	err = r.gopg.ModelContext(ctx, &model.UserToken{}).Where("user_id=?", req.Id).First()
+	var query string
+	id := uuid.New().String()
+
+	tokenExpiredAt := req.TokenExpiredAt.UTC().Format(time.RFC3339)
+	refreshTokenExpiredAt := req.RefreshTokenExpiredAt.UTC().Format(time.RFC3339)
+
+	if err != nil {
+		if err == pg.ErrNoRows {
+			query = `INSERT INTO user_tokens (id, user_id, token, token_expired_at, refresh_token, refresh_token_expired_at, created_at) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', now()) `
+			query = fmt.Sprintf(query, id, req.Id, req.Token, tokenExpiredAt, req.RefreshToken, refreshTokenExpiredAt)
+		} else {
+			return
+		}
+	} else {
+		query = `UPDATE user_tokens SET  token = '%s', token_expired_at = '%s', refresh_token = '%s',  refresh_token_expired_at = '%s', updated_at = now()  WHERE user_id = '%s' `
+		query = fmt.Sprintf(query, req.Token, tokenExpiredAt, req.RefreshToken, refreshTokenExpiredAt, req.Id)
+	}
+
+	_, err = r.gopg.ExecContext(ctx, query)
+
+	if err != nil {
+		return
+	}
+
+	return nil
 }

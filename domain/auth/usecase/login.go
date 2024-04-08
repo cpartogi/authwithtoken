@@ -62,6 +62,18 @@ func (u *AuthUsecase) Login(ctx context.Context, req model.Users) (res model.Use
 		return
 	}
 
+	err = u.authRepo.UpsertUserToken(ctx, model.UserToken{
+		Id:                    loginData.Id,
+		Token:                 token.Token,
+		TokenExpiredAt:        token.TokenExpiredAt,
+		RefreshToken:          token.RefreshToken,
+		RefreshTokenExpiredAt: token.RefreshTokenExpiredAt,
+	})
+
+	if err != nil {
+		return
+	}
+
 	res = model.UserToken{
 		Id:                    loginData.Id,
 		Token:                 token.Token,
