@@ -32,7 +32,7 @@ func (h *AuthHandler) GetToken(c echo.Context) error {
 	data := response.UserToken{
 		Id:             userToken.Id,
 		Token:          userToken.Token,
-		TokenExpiredAt: userToken.TokenExpiredAt,
+		TokenExpiredAt: &userToken.TokenExpiredAt,
 	}
 
 	return utils.SuccessResponse(c, constant.SuccessGetData, data)

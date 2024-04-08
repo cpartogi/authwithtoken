@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/go-pg/pg"
+	"github.com/google/uuid"
 )
 
 type AuthRepo struct {
@@ -71,4 +72,33 @@ func (r *AuthRepo) GetUserById(ctx context.Context, id string) (res model.Users,
 	}
 
 	return res, nil
+}
+
+func (r *AuthRepo) InsertUserLog(ctx context.Context, req model.UserLogs) (err error) {
+
+	tx, err := r.gopg.Begin()
+
+	if err != nil {
+		return
+	}
+
+	req.Id = uuid.New().String()
+
+	query := `INSERT INTO user_logs (id, user_id, is_success, login_message, created_at) values ('%s', '%s', '%t', '%s', now())`
+	query = fmt.Sprintf(query, req.Id, req.UserId, req.IsSuccess, req.LoginMessage)
+
+	_, err = tx.ExecContext(ctx, query)
+
+	if err != nil {
+		tx.Rollback()
+		return
+	}
+
+	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		return
+	}
+
+	return
+
 }

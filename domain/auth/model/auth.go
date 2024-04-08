@@ -17,3 +17,10 @@ type UserToken struct {
 	RefreshToken          string
 	RefreshTokenExpiredAt time.Time
 }
+
+type UserLogs struct {
+	Id           string
+	UserId       string
+	IsSuccess    bool
+	LoginMessage string
+}

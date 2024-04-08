@@ -29,7 +29,7 @@ func (h *AuthHandler) Login(c echo.Context) error {
 	data := response.UserToken{
 		Id:                    login.Id,
 		Token:                 login.Token,
-		TokenExpiredAt:        login.TokenExpiredAt,
+		TokenExpiredAt:        &login.TokenExpiredAt,
 		RefreshToken:          login.RefreshToken,
 		RefreshTokenExpiredAt: &login.RefreshTokenExpiredAt,
 	}

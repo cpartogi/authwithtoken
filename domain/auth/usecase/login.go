@@ -34,10 +34,30 @@ func (u *AuthUsecase) Login(ctx context.Context, req model.Users) (res model.Use
 
 	err = utils.CheckPasswordHash(req.UserPassword, loginData.UserPassword)
 	if err != nil {
+		err = u.authRepo.InsertUserLog(ctx, model.UserLogs{
+			UserId:       loginData.Id,
+			IsSuccess:    false,
+			LoginMessage: constant.PasswordWrong,
+		})
+
+		if err != nil {
+			return
+		}
+
 		return res, errors.New(constant.PasswordWrong)
 	}
 
 	token, err := helper.GenerateTokenAndRefreshToken(loginData)
+	if err != nil {
+		return
+	}
+
+	err = u.authRepo.InsertUserLog(ctx, model.UserLogs{
+		UserId:       loginData.Id,
+		IsSuccess:    true,
+		LoginMessage: "success",
+	})
+
 	if err != nil {
 		return
 	}
