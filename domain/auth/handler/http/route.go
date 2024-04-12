@@ -9,10 +9,10 @@ import (
 )
 
 type AuthHandler struct {
-	authUsecase auth.AuthUsecaseInteface
+	authUsecase auth.AuthUsecaseInterface
 }
 
-func NewAuthHander(e *echo.Echo, us auth.AuthUsecaseInteface) {
+func NewAuthHander(e *echo.Echo, us auth.AuthUsecaseInterface) {
 	handler := &AuthHandler{
 		authUsecase: us,
 	}
