@@ -34,5 +34,5 @@ func (h *AuthHandler) Login(c echo.Context) error {
 		RefreshTokenExpiredAt: &login.RefreshTokenExpiredAt,
 	}
 
-	return utils.SuccessResponse(c, constant.SuccessAddData, data)
+	return utils.SuccessResponse(c, constant.SuccessLogin, data)
 }

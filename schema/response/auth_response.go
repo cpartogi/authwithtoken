@@ -16,3 +16,7 @@ type UserData struct {
 	Email       string `json:"email"`
 	PhoneNumber string `json:"phoneNumber"`
 }
+
+type UserUpdate struct {
+	Id string `json:"id"`
+}

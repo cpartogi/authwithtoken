@@ -30,6 +30,16 @@ func (u *AuthUsecase) GetToken(ctx context.Context, refreshToken string) (res mo
 		return
 	}
 
+	err = u.authRepo.UpsertUserToken(ctx, model.UserToken{
+		Id:             loginData.Id,
+		Token:          token.Token,
+		TokenExpiredAt: token.TokenExpiredAt,
+	})
+
+	if err != nil {
+		return
+	}
+
 	res = model.UserToken{
 		Id:             loginData.Id,
 		Token:          token.Token,

@@ -47,7 +47,7 @@ func (r *AuthRepo) GetUserByEmail(ctx context.Context, email string) (res model.
 		}
 	}
 
-	return res, nil
+	return
 }
 
 func (r *AuthRepo) GetUserById(ctx context.Context, id string) (res model.Users, err error) {
@@ -60,7 +60,7 @@ func (r *AuthRepo) GetUserById(ctx context.Context, id string) (res model.Users,
 		}
 	}
 
-	return res, nil
+	return
 }
 
 func (r *AuthRepo) InsertUserLog(ctx context.Context, req model.UserLogs) (err error) {
@@ -98,8 +98,14 @@ func (r *AuthRepo) UpsertUserToken(ctx context.Context, req model.UserToken) (er
 			return
 		}
 	} else {
-		query = `UPDATE user_tokens SET  token = '%s', token_expired_at = '%s', refresh_token = '%s',  refresh_token_expired_at = '%s', updated_at = now()  WHERE user_id = '%s' `
-		query = fmt.Sprintf(query, req.Token, tokenExpiredAt, req.RefreshToken, refreshTokenExpiredAt, req.Id)
+
+		if req.RefreshToken != "" {
+			query = `UPDATE user_tokens SET  token = '%s', token_expired_at = '%s', refresh_token = '%s',  refresh_token_expired_at = '%s', updated_at = now()  WHERE user_id = '%s' `
+			query = fmt.Sprintf(query, req.Token, tokenExpiredAt, req.RefreshToken, refreshTokenExpiredAt, req.Id)
+		} else {
+			query = `UPDATE user_tokens SET  token = '%s', token_expired_at = '%s', updated_at = now()  WHERE user_id = '%s' `
+			query = fmt.Sprintf(query, req.Token, tokenExpiredAt, req.Id)
+		}
 	}
 
 	_, err = r.gopg.ExecContext(ctx, query)
@@ -108,5 +114,19 @@ func (r *AuthRepo) UpsertUserToken(ctx context.Context, req model.UserToken) (er
 		return
 	}
 
-	return nil
+	return
+}
+
+func (r *AuthRepo) UpdateUser(ctx context.Context, req model.Users) (err error) {
+
+	query := `UPDATE users SET full_name  = '%s', phone_number = '%s', user_password  = '%s', updated_at = now(), updated_by = '%s' WHERE id = '%s' `
+	query = fmt.Sprintf(query, req.FullName, req.PhoneNumber, req.UserPassword, req.Id, req.Id)
+
+	_, err = r.gopg.ExecContext(ctx, query)
+
+	if err != nil {
+		return
+	}
+
+	return
 }

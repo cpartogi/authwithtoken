@@ -8,6 +8,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/go-pg/pg"
 	"github.com/google/uuid"
 )
 
@@ -29,7 +30,9 @@ func (u *AuthUsecase) RegisterUser(ctx context.Context, req model.Users) (id str
 	checkMail, err := u.authRepo.GetUserByEmail(ctx, req.Email)
 
 	if err != nil {
-		return "", err
+		if err != pg.ErrNoRows {
+			return "", err
+		}
 	}
 
 	if checkMail.Email != "" {

@@ -19,4 +19,5 @@ func NewAuthHander(e *echo.Echo, us auth.AuthUsecaseInteface) {
 	e.POST("/auth/login", handler.Login)
 	e.GET("/auth/token", handler.GetToken)
 	e.GET("/auth/user", handler.GetUser)
+	e.PUT("auth/user", handler.UpdateUser)
 }
