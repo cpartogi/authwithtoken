@@ -16,14 +16,6 @@ func (h *AuthHandler) UpdateUser(c echo.Context) error {
 
 	cekHeader := c.Request().Header
 
-	if cekHeader.Get("X-Authorization") == "" {
-		return utils.ErrorForbidden(c, constant.ErrForbidden, "")
-	}
-
-	if !strings.Contains(cekHeader.Get("X-Authorization"), "JWT") {
-		return utils.ErrorForbidden(c, constant.ErrForbidden, "")
-	}
-
 	tokenString := strings.Replace(cekHeader.Get("X-Authorization"), "JWT ", "", -1)
 
 	var req request.UpdateUser

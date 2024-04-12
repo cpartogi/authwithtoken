@@ -14,14 +14,6 @@ func (h *AuthHandler) GetToken(c echo.Context) error {
 
 	cekHeader := c.Request().Header
 
-	if cekHeader.Get("Authorization") == "" {
-		return utils.ErrorForbidden(c, constant.ErrForbidden, "")
-	}
-
-	if !strings.Contains(cekHeader.Get("Authorization"), "Bearer") {
-		return utils.ErrorForbidden(c, constant.ErrForbidden, "")
-	}
-
 	tokenString := strings.Replace(cekHeader.Get("Authorization"), "Bearer ", "", -1)
 
 	userToken, err := h.authUsecase.GetToken(ctx, tokenString)
