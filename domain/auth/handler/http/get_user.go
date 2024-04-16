@@ -12,7 +12,7 @@ import (
 // GetUser godoc
 // @Summary get user data
 // @Description get user data
-// @Tags Register
+// @Tags Auth
 // @Accept  json
 // @Produce  json
 // @Param  X-Authorization header string true "X-Authorization" default(JWT token)

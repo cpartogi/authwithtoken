@@ -12,7 +12,7 @@ import (
 // GetToken godoc
 // @Summary get token
 // @Description get token
-// @Tags Register
+// @Tags Auth
 // @Accept  json
 // @Produce  json
 // @Param  Authorization header string true "Bearer" default(Bearer refreshToken)

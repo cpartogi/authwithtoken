@@ -14,7 +14,7 @@ import (
 // RegisterUser godoc
 // @Summary Register new user
 // @Description Register new user
-// @Tags Register
+// @Tags Auth
 // @Accept  json
 // @Produce  json
 // @Param request body request.RegisterUser true "Request Body"

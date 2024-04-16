@@ -14,7 +14,7 @@ import (
 // UpdateUser godoc
 // @Summary update user data
 // @Description update user data
-// @Tags Register
+// @Tags Auth
 // @Accept  json
 // @Produce  json
 // @Param  X-Authorization header string true "X-Authorization" default(JWT token)

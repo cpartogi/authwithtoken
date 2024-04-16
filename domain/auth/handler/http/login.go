@@ -13,7 +13,7 @@ import (
 // UserLogin godoc
 // @Summary user login
 // @Description user login
-// @Tags Register
+// @Tags Auth
 // @Accept  json
 // @Produce  json
 // @Param request body request.Login true "Request Body"
