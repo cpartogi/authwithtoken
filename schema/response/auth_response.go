@@ -20,3 +20,29 @@ type UserData struct {
 type UserUpdate struct {
 	Id string `json:"id"`
 }
+
+type RegisterUserSuccessSwagger struct {
+	Base
+	Data UserUpdate `json:"data"`
+}
+
+type LoginSuccessSwagger struct {
+	Base
+	Data UserToken `json:"data"`
+}
+
+type GetTokenResponse struct {
+	Id             string     `json:"id"`
+	Token          string     `json:"token,omitempty"`
+	TokenExpiredAt *time.Time `json:"tokenExpiredAt,omitempty"`
+}
+
+type GetTokenSwagger struct {
+	Base
+	Data GetTokenResponse `json:"data"`
+}
+
+type GetUserDataSwagger struct {
+	Base
+	Data UserData `json:"data"`
+}

@@ -1,4 +1,5 @@
-run:	
+run:
+	swag init	
 	go run main.go
 
 init-app:
@@ -9,10 +10,10 @@ docker-restart:
 	docker compose down -v
 	docker compose up -d
 
-migration-up:
+test-migration-up:
 	migrate -path migrations -database "postgresql://postgres:postgres@localhost:6432/postgres?sslmode=disable" -verbose up
 
-migration-down:
+test-migration-down:
 	migrate -path migrations -database "postgresql://postgres:postgres@localhost:6432/postgres?sslmode=disable" -verbose down
 
 mock-gen:

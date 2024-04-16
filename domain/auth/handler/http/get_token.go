@@ -9,6 +9,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GetToken godoc
+// @Summary get token
+// @Description get token
+// @Tags Register
+// @Accept  json
+// @Produce  json
+// @Param  Authorization header string true "Bearer" default(Bearer xxx)
+// @Success 200 {object} response.GetTokenSwagger
+// @Failure 403 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Router /auth/token [get]
 func (h *AuthHandler) GetToken(c echo.Context) error {
 	ctx := c.Request().Context()
 

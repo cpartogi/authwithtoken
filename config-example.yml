@@ -1,0 +1,17 @@
+api:
+  port: ":7100"
+  timeout: 1000
+database:
+    postgres: 
+      host: "host"
+      port: "5432"
+      dbname: "dbname"
+      user: "username"
+      password: "password"
+      sslmode : "disable"
+context:
+  timeout: 10
+token:
+  key: "privatekey"
+  expiry: "+10m"
+  refresh_token_expiry : "+4h"

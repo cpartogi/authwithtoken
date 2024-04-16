@@ -8,9 +8,12 @@ import (
 
 	handler "authwithtoken/domain/auth/handler/http"
 
+	_ "authwithtoken/docs"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func init() {
@@ -40,6 +43,7 @@ func main() {
 	authUc := usecase.NewAuthUsecase(authRepo)
 
 	handler.NewAuthHander(e, authUc)
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	// start serve
 	e.Logger.Fatal(e.Start(viper.GetString("api.port")))

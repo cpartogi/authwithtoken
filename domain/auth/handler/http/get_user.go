@@ -9,6 +9,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GetUser godoc
+// @Summary get user data
+// @Description get user data
+// @Tags Register
+// @Accept  json
+// @Produce  json
+// @Param  X-Authorization header string true "X-Authorization" default(JWT xxx)
+// @Success 200 {object} response.GetUserDataSwagger
+// @Failure 403 {object} response.Base
+// @Failure 404 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Router /auth/user [get]
 func (h *AuthHandler) GetUser(c echo.Context) error {
 	ctx := c.Request().Context()
 

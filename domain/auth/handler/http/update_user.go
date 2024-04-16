@@ -11,6 +11,19 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// UpdateUser godoc
+// @Summary update user data
+// @Description update user data
+// @Tags Register
+// @Accept  json
+// @Produce  json
+// @Param  X-Authorization header string true "X-Authorization" default(JWT xxx)
+// @Param request body request.UpdateUser true "Request Body"
+// @Success 200 {object} response.RegisterUserSuccessSwagger
+// @Failure 400 {object} response.Base
+// @Failure 403 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Router /auth/user [put]
 func (h *AuthHandler) UpdateUser(c echo.Context) error {
 	ctx := c.Request().Context()
 

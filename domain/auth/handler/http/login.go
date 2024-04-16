@@ -10,6 +10,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// UserLogin godoc
+// @Summary user login
+// @Description user login
+// @Tags Register
+// @Accept  json
+// @Produce  json
+// @Param request body request.Login true "Request Body"
+// @Success 200 {object} response.LoginSuccessSwagger
+// @Failure 400 {object} response.Base
+// @Failure 500 {object} response.Base
+// @Router /auth/login [post]
 func (h *AuthHandler) Login(c echo.Context) error {
 	ctx := c.Request().Context()
 	var req request.Login
