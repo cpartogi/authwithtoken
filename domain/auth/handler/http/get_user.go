@@ -15,7 +15,7 @@ import (
 // @Tags Register
 // @Accept  json
 // @Produce  json
-// @Param  X-Authorization header string true "X-Authorization" default(JWT xxx)
+// @Param  X-Authorization header string true "X-Authorization" default(JWT token)
 // @Success 200 {object} response.GetUserDataSwagger
 // @Failure 403 {object} response.Base
 // @Failure 404 {object} response.Base

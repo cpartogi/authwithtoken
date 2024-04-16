@@ -15,7 +15,7 @@ import (
 // @Tags Register
 // @Accept  json
 // @Produce  json
-// @Param  Authorization header string true "Bearer" default(Bearer xxx)
+// @Param  Authorization header string true "Bearer" default(Bearer refreshToken)
 // @Success 200 {object} response.GetTokenSwagger
 // @Failure 403 {object} response.Base
 // @Failure 404 {object} response.Base
