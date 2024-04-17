@@ -17,7 +17,6 @@ test-migration-down:
 	migrate -path migrations -database "postgresql://postgres:postgres@localhost:6432/postgres?sslmode=disable" -verbose down
 
 mock-gen:
-	mockery --dir domain/auth --name AuthUsecaseInterface --filename iauth_usecase.go --output domain/auth/mocks --with-expecter
 	mockery --dir domain/auth --name AuthRepoInterface --filename iauth_repo.go --output domain/auth/mocks --with-expecter	
 
 test:
