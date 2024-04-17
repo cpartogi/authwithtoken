@@ -37,7 +37,7 @@ make run
 ```bash 
 make docker-restart
 ```
-2. Run dummy data for testing with command :
+2. Data migration for testing with command :
 ```bash 
 make test-migration-up
 ```
